@@ -10,7 +10,7 @@ use Illuminate\Http\Request;
 
 class ViewController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $advertisements = Advertisement::query()
             ->from("advertisements as a")
