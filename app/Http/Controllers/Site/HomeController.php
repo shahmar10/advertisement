@@ -83,7 +83,9 @@ class HomeController extends Controller
                 'ai.distance',
                 'ai.vin_code',
                 'ct.name as city',
-                'b.name as ban'
+                'b.name as ban',
+                'a.view',
+                'a.updated_at',
             )
             ->join("site_users as su", 'su.id', 'a.created_by')
             ->join("cars as c", 'c.id', 'a.car_id')
@@ -99,6 +101,12 @@ class HomeController extends Controller
             ->where('expired_at', '>=', Carbon::now()->format('Y-m-d'))
             ->with(['photos', 'suppliers'])
             ->firstOrFail();
+
+        Advertisement::query()
+            ->where('id', $id)
+            ->update([
+                'view' => $advertisement->view + 1
+            ]);
 
         return view('site.detail', compact('advertisement'));
     }

@@ -18,6 +18,7 @@ class Advertisement extends Model
         'currency_id',
         'status',
         'expired_at',
+        'view',
     ];
 
     public function photos()
