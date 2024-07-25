@@ -10,6 +10,7 @@ use App\Http\Controllers\Dashboard\CarModel\QueryController as CarModelQueryCont
 use App\Http\Controllers\Dashboard\SiteUser\QueryController as SiteUserQueryController;
 use App\Http\Controllers\Dashboard\Advertisement\ViewController;
 use App\Http\Controllers\Dashboard\Advertisement\CommandController as AdvertisementCommandController;
+use App\Http\Controllers\Dashboard\Export\AdvertisementController as AdvertisementExportController;
 
 Route::group(['middleware' => 'dashboardAuthCheck'], function () {
     Route::get('/home', [HomeController::class, 'index'])->name('home');
@@ -22,12 +23,14 @@ Route::group(['middleware' => 'dashboardAuthCheck'], function () {
         Route::get('/index', [CarQueryController::class, 'index'])->name('index');
         Route::get('/index/trash', [CarQueryController::class, 'trash'])->name('index.trash');
         Route::get('/edit/{id}', [CarQueryController::class, 'edit'])->name('edit');
+        Route::get('/import', [CarQueryController::class, 'import'])->name('import-view');
 
         #Command
         Route::post('/store', [CarCommandController::class, 'store'])->name('store');
         Route::post('/update/{id}', [CarCommandController::class, 'update'])->name('update');
         Route::get('/delete/{id}', [CarCommandController::class, 'delete'])->name('delete');
         Route::get('/delete-back/{id}', [CarCommandController::class, 'deleteBack'])->name('delete.back');
+        Route::post('/import', [CarCommandController::class, 'import'])->name('import');
     });
 
     Route::group(['prefix' => 'car-model', 'as' => 'car-model.'], function () {
@@ -56,6 +59,10 @@ Route::group(['middleware' => 'dashboardAuthCheck'], function () {
         Route::get('/show/{id}', [ViewController::class, 'show'])->name('show');
         Route::get('/approve/{id}', [AdvertisementCommandController::class, 'approve'])->name('approve');
         Route::get('/reject/{id}', [AdvertisementCommandController::class, 'reject'])->name('reject');
+    });
+
+    Route::group(['prefix' => 'export', 'as' => 'export.'], function () {
+        Route::get('/index', [AdvertisementExportController::class, 'index'])->name('index');
     });
 });
 

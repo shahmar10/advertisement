@@ -15,6 +15,8 @@ use App\Models\Color;
 use App\Models\Currency;
 use App\Models\FuelType;
 use App\Models\Gear;
+use App\Models\Notification;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 
@@ -46,6 +48,8 @@ class StoreController extends Controller
         $this->saveSuppliers($request, $advertisement->id);
 
         $this->savePhotos($request, $advertisement->id);
+
+        $this->sendNotificationToAdmin($request, $advertisement->id);
 
         return redirect()->back()->with('success', 'Elaniniza baxis kecirilecek');
     }
@@ -116,5 +120,24 @@ class StoreController extends Controller
 
         AdvertisementPhoto::query()
             ->insert($insertPhoto);
+    }
+
+    private function sendNotificationToAdmin(Request $request, $advertisementId)
+    {
+        $admins = User::query()
+            ->select('id')
+            ->get();
+
+        foreach ($admins as $admin)
+        {
+            Notification::query()
+                ->create([
+                    'user_id' => $admin->id,
+                    'title' => 'Yeni elan',
+                    'body' => 'Elan metn',
+                    'related_id' => $advertisementId,
+                    'related_module' => 'App\Models\Advertisement'
+                ]);
+        }
     }
 }

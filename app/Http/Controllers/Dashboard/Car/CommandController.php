@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Dashboard\Car;
 
 use App\Http\Controllers\Controller;
 use App\Http\Utils\MessageUtil;
+use App\Imports\CarImport;
 use App\Models\Car;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\DB;
+use Maatwebsite\Excel\Facades\Excel;
 
 class CommandController extends Controller
 {
@@ -78,5 +80,12 @@ class CommandController extends Controller
         Cache::forget('car_select');
 
         return to_route('dashboard.car.edit', $id)->with('success', MessageUtil::MESSAGE_UPDATED);
+    }
+
+    public function import(Request $request)
+    {
+        Excel::import(new CarImport(auth()->user()->id), $request->cars);
+
+        return back();
     }
 }

@@ -8,6 +8,13 @@
             <div class="col-md-10">
                 <h1 class="h3 mb-2 text-gray-800">Advertisements</h1>
             </div>
+            <div class="col-md-2">
+                <h1 class="h3 mb-2 text-gray-800">
+                    <a href="{{ route('dashboard.export.index') }}" class="btn btn-sm btn-success">
+                        <i class="fa fa-file-excel"></i> Excel
+                    </a>
+                </h1>
+            </div>
         </div>
 
         <form action="" method="GET">

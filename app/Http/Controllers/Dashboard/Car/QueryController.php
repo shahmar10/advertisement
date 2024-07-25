@@ -86,4 +86,8 @@ class QueryController extends Controller
         return view('dashboard.car.edit', compact('car'));
     }
 
+    public function import(Request $request)
+    {
+        return view('dashboard.car.import');
+    }
 }
